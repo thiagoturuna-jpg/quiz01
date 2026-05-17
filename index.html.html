@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Bíblico Infantil</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&display=swap');
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Baloo 2', Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(180deg, #bfe9ff 0%, #f6ffcf 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 430px;
+      background: rgba(255,255,255,0.92);
+      border-radius: 34px;
+      padding: 18px;
+      box-shadow: 0 10px 30px rgba(91, 57, 165, 0.18);
+      text-align: center;
+      overflow: hidden;
+      border: 3px solid #efe1ff;
+      backdrop-filter: blur(4px);
+    }
+
+    h1 {
+      color: #4b169c;
+      font-size: 2.2rem;
+      margin-bottom: 6px;
+      line-height: 1.05;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      color: #4b4b4b;
+      font-size: 1.15rem;
+      margin-bottom: 20px;
+      line-height: 1.4;
+      padding: 0 10px;
+    }
+
+    .logo {
+      width: 100%;
+      max-width: 205px;
+      margin: 0 auto 8px;
+      display: block;
+      object-fit: contain;
+    }
+    }
+
+    .hero-illustration {
+      font-size: 4.5rem;
+      margin: 12px 0 8px;
+      animation: float 2.5s ease-in-out infinite;
+    }
+
+    .progress {
+      font-weight: 800;
+      color: #8a45ef;
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+      background: #efe2ff;
+      border-radius: 999px;
+      padding: 10px 16px;
+      display: inline-block;
+    }
+
+    .question-card {
+      background: rgba(255,255,255,0.88);
+      border-radius: 28px;
+      padding: 18px;
+      margin-bottom: 14px;
+      border: 3px solid #e7d8ff;
+      box-shadow: 0 8px 20px rgba(122, 80, 190, 0.08);
+    }
+
+    .illustration-box {
+      width: 100%;
+      min-height: 190px;
+      background: linear-gradient(180deg, #d6ecff, #fffbe0);
+      border-radius: 24px;
+      border: 4px solid #efe3ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+
+    .illustration {
+      font-size: 5.2rem;
+      line-height: 1.1;
+      animation: float 2.2s ease-in-out infinite;
+      filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.12));
+      text-align: center;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .question {
+      font-size: 2rem;
+      color: #281252;
+      margin-bottom: 18px;
+      line-height: 1.2;
+      font-weight: 800;
+    }
+
+    .answers {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    button {
+      border: none;
+      border-radius: 24px;
+      padding: 18px;
+      font-size: 1.4rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    button:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
+    }
+
+    .answer-btn {
+      background: linear-gradient(180deg, #9b55ff, #7637d6);
+      color: white;
+      min-height: 78px;
+      box-shadow: 0 10px 18px rgba(122, 60, 201, 0.25);
+    }
+
+    .answer-btn:nth-child(2) {
+      background: linear-gradient(180deg, #4cd96d, #20b44d);
+    }
+
+    .answer-btn:disabled {
+      opacity: 0.75;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .start-btn,
+    .restart-btn {
+      background: linear-gradient(180deg, #ffd84e, #ffbc00);
+      color: #3d2b00;
+      margin-top: 12px;
+      width: 100%;
+      max-width: 300px;
+      min-height: 62px;
+      border-radius: 22px;
+      font-size: 1.35rem;
+      font-weight: 800;
+      box-shadow: 0 8px 16px rgba(255, 196, 0, 0.35);
+    }
+
+    .feedback {
+      min-height: 32px;
+      margin-top: 16px;
+      font-size: 1.15rem;
+      font-weight: bold;
+    }
+
+    .correct {
+      color: #0b8a50;
+    }
+
+    .wrong {
+      color: #d62828;
+    }
+
+    .result {
+      display: none;
+    }
+
+    .result-illustration {
+      font-size: 5rem;
+      margin: 8px 0 4px;
+      animation: float 2.5s ease-in-out infinite;
+    }
+
+    .stars {
+      font-size: 3rem;
+      margin: 18px 0;
+      color: #ffb703;
+      letter-spacing: 4px;
+    }
+
+    .score-text {
+      font-size: 1.35rem;
+      color: #333;
+      margin-bottom: 12px;
+    }
+
+    .message {
+      font-size: 1.1rem;
+      color: #555;
+      margin-bottom: 18px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 560px) {
+      .container {
+        padding: 14px;
+        border-radius: 28px;
+      }
+
+      h1 {
+        font-size: 1.95rem;
+      }
+
+      .question {
+        font-size: 1.7rem;
+      }
+
+      .illustration {
+        font-size: 4.6rem;
+      }
+
+      .illustration-box {
+        min-height: 170px;
+      }
+
+      .stars {
+        font-size: 2.5rem;
+      }
+
+      button {
+        font-size: 1.25rem;
+        min-height: 72px;
+      }
+    }
+
+      h1 {
+        font-size: 1.65rem;
+      }
+
+      .question {
+        font-size: 1.25rem;
+      }
+
+      .answers {
+        grid-template-columns: 1fr;
+      }
+
+      .illustration {
+        font-size: 4.4rem;
+      }
+
+      .illustration-box {
+        min-height: 140px;
+      }
+
+      .stars {
+        font-size: 2.35rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section id="intro">
+      <img src="https://lh3.googleusercontent.com/sitesv/AA5AbUDwmKTInr-u32XuYS0wEJhPbyz7NdXUY0f2kVH59DYQuBx59ToqEvvDagRKTEiKNIwvfMm5m1L_1dxWnqQIPPFNzpPmQMBQ6magwZx6IdYzfVakuMdjCgXQn20Y4AfSyaQK5M22_B61ldfzh35m5u9ZY8lM4bR7dPBBQ-bJAQfGCSFuovBtYrYdy3v76GqR-iaKcsPyh97BzOGnQDk4ozL6W6p2sjcrOrkOgmg=w1280" alt="Rede Infantil Monte Sião" class="logo" />
+      <h1>🌟 Quiz Bíblico Infantil 🌟</h1>
+      <div class="hero-illustration">📖✨</div>
+      <p class="subtitle">Responda 5 perguntas. A resposta será sempre Jesus ou Deus.</p>
+      <button class="start-btn" onclick="startQuiz()">Começar Rodada</button>
+    </section>
+
+    <section id="quiz" class="hidden">
+      <div class="progress" id="progress"></div>
+
+      <div class="question-card">
+        <div class="illustration-box">
+          <div class="illustration" id="illustration" aria-hidden="true"></div>
+        </div>
+
+        <div class="question" id="question"></div>
+
+        <div class="answers">
+          <button class="answer-btn" onclick="answerQuestion('Jesus')">Jesus</button>
+          <button class="answer-btn" onclick="answerQuestion('Deus')">Deus</button>
+        </div>
+
+        <div class="feedback" id="feedback"></div>
+      </div>
+    </section>
+
+    <section id="result" class="result">
+      <img src="https://lh3.googleusercontent.com/sitesv/AA5AbUDwmKTInr-u32XuYS0wEJhPbyz7NdXUY0f2kVH59DYQuBx59ToqEvvDagRKTEiKNIwvfMm5m1L_1dxWnqQIPPFNzpPmQMBQ6magwZx6IdYzfVakuMdjCgXQn20Y4AfSyaQK5M22_B61ldfzh35m5u9ZY8lM4bR7dPBBQ-bJAQfGCSFuovBtYrYdy3v76GqR-iaKcsPyh97BzOGnQDk4ozL6W6p2sjcrOrkOgmg=w1280" alt="Rede Infantil Monte Sião" class="logo" />
+      <h1>Resultado Final</h1>
+      <div class="result-illustration" id="resultIllustration">🏆</div>
+      <div class="stars" id="stars"></div>
+      <p class="score-text" id="scoreText"></p>
+      <p class="message" id="message"></p>
+      <button class="restart-btn" onclick="startQuiz()">Jogar Novamente</button>
+    </section>
+  </main>
+
+  <script>
+    const questions = [
+      { text: "Quem nasceu em uma manjedoura?", answer: "Jesus", illustration: "👶✨🐑" },
+      { text: "Quem ensinava através de parábolas?", answer: "Jesus", illustration: "👨‍🏫📖🌾" },
+      { text: "Quem andou sobre as águas?", answer: "Jesus", illustration: "🌊🚶‍♂️✨" },
+      { text: "Quem multiplicou os pães e os peixes?", answer: "Jesus", illustration: "🍞🐟✨" },
+      { text: "Quem curava os doentes?", answer: "Jesus", illustration: "🤲❤️‍🩹✨" },
+      { text: "Quem chamou os discípulos para segui-lo?", answer: "Jesus", illustration: "👣👥✨" },
+      { text: "Quem morreu na cruz por amor às pessoas?", answer: "Jesus", illustration: "✝️❤️✨" },
+      { text: "Quem ressuscitou no terceiro dia?", answer: "Jesus", illustration: "☀️🕊️✨" },
+      { text: "Quem acalmou a tempestade no mar?", answer: "Jesus", illustration: "⛈️🌊🕊️" },
+      { text: "Quem disse: 'Deixai vir a mim as criancinhas'?", answer: "Jesus", illustration: "👧🧒❤️" },
+
+      { text: "Quem criou o céu e a terra?", answer: "Deus", illustration: "🌍☁️✨" },
+      { text: "Quem criou os animais?", answer: "Deus", illustration: "🦁🐘🐦" },
+      { text: "Quem fez o sol, a lua e as estrelas?", answer: "Deus", illustration: "☀️🌙⭐" },
+      { text: "Quem ama todas as pessoas?", answer: "Deus", illustration: "🌎❤️🤗" },
+      { text: "Quem ouviu a oração de Daniel?", answer: "Deus", illustration: "🙏🦁✨" },
+      { text: "Quem abriu o mar para Moisés passar?", answer: "Deus", illustration: "🌊🚶‍♂️🌊" },
+      { text: "Quem enviou o maná no deserto?", answer: "Deus", illustration: "🏜️🍞✨" },
+      { text: "Quem protege seus filhos todos os dias?", answer: "Deus", illustration: "🛡️👨‍👩‍👧‍👦✨" },
+      { text: "Quem falou com Noé para construir a arca?", answer: "Deus", illustration: "🌈🚢🐾" },
+      { text: "Quem conhece todas as coisas?", answer: "Deus", illustration: "👁️📖✨" }
+    ];
+
+    let roundQuestions = [];
+    let currentQuestion = 0;
+    let score = 0;
+    let answered = false;
+
+    function shuffleArray(array) {
+      return [...array].sort(() => Math.random() - 0.5);
+    }
+
+    function startQuiz() {
+      roundQuestions = shuffleArray(questions).slice(0, 5);
+      currentQuestion = 0;
+      score = 0;
+      answered = false;
+
+      document.getElementById("intro").classList.add("hidden");
+      document.getElementById("result").style.display = "none";
+      document.getElementById("quiz").classList.remove("hidden");
+
+      showQuestion();
+    }
+
+    function showQuestion() {
+      answered = false;
+      document.getElementById("feedback").textContent = "";
+      document.getElementById("feedback").className = "feedback";
+
+      const buttons = document.querySelectorAll(".answer-btn");
+      buttons.forEach(button => button.disabled = false);
+
+      const questionData = roundQuestions[currentQuestion];
+      document.getElementById("progress").textContent = `Pergunta ${currentQuestion + 1} de 5`;
+      document.getElementById("question").textContent = questionData.text;
+      document.getElementById("illustration").textContent = questionData.illustration;
+    }
+
+    function answerQuestion(selectedAnswer) {
+      if (answered) return;
+      answered = true;
+
+      const buttons = document.querySelectorAll(".answer-btn");
+      buttons.forEach(button => button.disabled = true);
+
+      const correctAnswer = roundQuestions[currentQuestion].answer;
+      const feedback = document.getElementById("feedback");
+
+      if (selectedAnswer === correctAnswer) {
+        score++;
+        feedback.textContent = "Muito bem! Você acertou! 🎉";
+        feedback.classList.add("correct");
+      } else {
+        feedback.textContent = `Quase! A resposta certa é ${correctAnswer}.`;
+        feedback.classList.add("wrong");
+      }
+
+      setTimeout(() => {
+        currentQuestion++;
+
+        if (currentQuestion < 5) {
+          showQuestion();
+        } else {
+          showResult();
+        }
+      }, 1300);
+    }
+
+    function showResult() {
+      document.getElementById("quiz").classList.add("hidden");
+      document.getElementById("result").style.display = "block";
+
+      const stars = "⭐".repeat(score);
+      document.getElementById("stars").textContent = stars || "🙂";
+      document.getElementById("scoreText").textContent = `Você acertou ${score} de 5 perguntas.`;
+
+      let message = "Continue tentando! Você está aprendendo!";
+      let resultIllustration = "📖🙂";
+
+      if (score === 5) {
+        message = "Excelente! Você ganhou 5 estrelas! 👑";
+        resultIllustration = "🏆👑🎉";
+      } else if (score >= 3) {
+        message = "Muito bom! Você foi muito bem!";
+        resultIllustration = "👏😊⭐";
+      } else if (score >= 1) {
+        message = "Boa tentativa! Vamos jogar outra rodada?";
+        resultIllustration = "💪📖✨";
+      }
+
+      document.getElementById("message").textContent = message;
+      document.getElementById("resultIllustration").textContent = resultIllustration;
+    }
+  </script>
+</body>
+</html>
